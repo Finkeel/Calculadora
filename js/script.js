@@ -20,7 +20,7 @@ class Calculator {
 
     processOperation(operation) {
 
-        if(this.currentOperationText.innerText === "") {
+        if(this.currentOperationText.innerText === "" && operation !== "C") {
             if(this.previousOperationText.innerText !== "") {
                 this.changeOperation(operation);
             }
@@ -39,18 +39,34 @@ class Calculator {
                 break;
 
             case "-":
-                operationValue = previous + current;
+                operationValue = previous - current;
                 this.updateScreen(operationValue, operation, current, previous);
                 break;
 
             case "/":
-                operationValue = previous + current;
+                operationValue = previous / current;
                 this.updateScreen(operationValue, operation, current, previous);
                 break;
                 
             case "*":
-                operationValue = previous + current;
+                operationValue = previous * current;
                 this.updateScreen(operationValue, operation, current, previous);
+                break;
+
+            case "DEL":
+                this.processDelOperation();
+                break;
+
+            case "CE":
+                this.processClearOperation();
+                break;
+
+            case "C":
+                this.processClearAllOperation();
+                break;
+
+            case "=":
+                this.processEqualOperation();
                 break;
             default:
                 return;
@@ -79,6 +95,25 @@ class Calculator {
 
 
         this.previousOperationText.innerText = this.previousOperationText.innerText.slice(0, -1) + operation;
+    }
+
+    processDelOperation() {
+        this.currentOperationText.innerText = this.currentOperationText.innerText.slice(0, -1);
+    }
+
+    processClearOperation() {
+        this.currentOperationText.innerText = '';
+    }
+
+    processClearAllOperation(){
+        this.currentOperationText.innerText = '';
+        this.previousOperationText.innerText = '';
+    }
+
+    processEqualOperation() {
+        const operation = previousOperationText.innerText.split(' ')[1]
+
+        this.processOperation(operation);
     }
 }
 
