@@ -19,11 +19,66 @@ class Calculator {
     }
 
     processOperation(operation) {
-        console.log(operation);
+
+        if(this.currentOperationText.innerText === "") {
+            if(this.previousOperationText.innerText !== "") {
+                this.changeOperation(operation);
+            }
+            return
+        }
+        
+
+        let operationValue;
+        const previous = +this.previousOperationText.innerText.split(' ')[0];
+        const current = +this.currentOperationText.innerText;
+
+        switch(operation){
+            case "+":
+                operationValue = previous + current;
+                this.updateScreen(operationValue, operation, current, previous);
+                break;
+
+            case "-":
+                operationValue = previous + current;
+                this.updateScreen(operationValue, operation, current, previous);
+                break;
+
+            case "/":
+                operationValue = previous + current;
+                this.updateScreen(operationValue, operation, current, previous);
+                break;
+                
+            case "*":
+                operationValue = previous + current;
+                this.updateScreen(operationValue, operation, current, previous);
+                break;
+            default:
+                return;
+        }
     }
 
-    updateScreen() {
-        this.currentOperationText.innerText += this.currentOperation;
+    updateScreen(operationValue = null, operation = null, current = null, previous = null) {
+        if(operationValue === null) {
+            this.currentOperationText.innerText += this.currentOperation;
+        } else{
+            if(previous === 0){
+                operationValue = current;
+            }
+
+            this.previousOperationText.innerText = `${operationValue} ${operation}`;
+            this.currentOperationText.innerText = "";
+        }
+    }
+
+    changeOperation(operation){
+        const mathOperations = ["+", "-", "/", "*"]
+
+        if(!mathOperations.includes(operation)) {
+            return;
+        }
+
+
+        this.previousOperationText.innerText = this.previousOperationText.innerText.slice(0, -1) + operation;
     }
 }
 
@@ -36,7 +91,7 @@ buttons.forEach((btn) => {
         if (+value >= 0 || value === ".") {
             calc.addDigit(value);
         } else{
-            calc.processOperation("Op: " + value);
+            calc.processOperation(value);
         }
     });
 });
